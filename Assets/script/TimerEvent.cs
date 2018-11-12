@@ -6,20 +6,34 @@ public class TimerEvent : MonoBehaviour
 {
     public float time = 1;
     public bool repeat = false;
+    public int zomb = 0;
     public UnityEvent onTimerComplete;
     private void Start()
     {
-        if (repeat)
+
         {
-            InvokeRepeating("OnTimerComplete", 0, time);
+            if (repeat)
+            {
+                InvokeRepeating("OnTimerComplete", 0, time);
+                zomb += 1;
+            }
+            else
+            {
+                Invoke("OnTimerComplete", time);
+                zomb += 1;
+            }
         }
-        else
+
+
+        }
+        private void OnTimerComplete()
         {
-            Invoke("OnTimerComplete", time);
+            onTimerComplete.Invoke();
+            zomb += 1;
+        if (zomb >= 5)
+        {
+            CancelInvoke();
         }
     }
-    private void OnTimerComplete()
-    {
-        onTimerComplete.Invoke();
     }
-}
+    
